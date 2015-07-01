@@ -1,4 +1,19 @@
-var PersistentWS = (function() { // Module pattern
+(function(root, factory) {
+  if(typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define([], factory);
+  }
+  
+  if(typeof exports === 'object') {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory();
+  }
+  
+  // Browser globals (root is window)
+  root.PersistentWS = factory();
+}(this, function() {
   /**
    * @description This script provides a persistent WebSocket that attempts to reconnect after disconnections
    */
@@ -126,8 +141,4 @@ var PersistentWS = (function() { // Module pattern
   
   // Only one object to return, so no need for module object to hold it
   return PersistentWS;
-})(); // Module pattern
-
-if(typeof module !== 'undefined' && module !== null && module.exports) {
-  module.exports = PersistentWS;
-}
+})); // Module pattern

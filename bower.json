@@ -1,0 +1,24 @@
+{
+  "name": "persistent-ws",
+  "main": "PersistentWS.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Densaugeo/PersistentWS",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Densaugeo/PersistentWS.git"
+  },
+  "authors": [
+    "Densaugeo <you@example.com>"
+  ],
+  "description": "Browser WebSocket wrapper for auto-reconnection",
+  "moduleType": [
+    "globals",
+    "node",
+    "amd"
+  ],
+  "keywords": [
+    "WebSocket",
+    "persistent"
+  ],
+  "license": "MIT"
+}
