@@ -20,5 +20,6 @@
     "WebSocket",
     "persistent"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "ignore": []
 }
