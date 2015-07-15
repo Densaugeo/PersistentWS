@@ -7,29 +7,17 @@
     "type": "git",
     "url": "git://github.com/Densaugeo/PersistentWS.git"
   },
-  "authors": [
-    "Densaugeo <you@example.com> (http://www.madengineersworkshop.net/)"
-  ],
+  "bugs": "https://github.com/Densaugeo/PersistentWS/issues",
+  "author": "Densaugeo <a@b.c> (http://www.madengineersworkshop.net/)",
   "description": "Browser WebSocket wrapper for auto-reconnection",
-  "moduleType": [
-    "globals",
-    "node",
-    "amd"
-  ],
   "keywords": [
     "WebSocket",
     "persistent"
   ],
   "license": "MIT",
-  "ignore": [
-    ".git",
-    ".jshintrc"
-  ],
   "dependencies": {
   },
   "devDependencies": {
-  },
-  "resolutions": {
   },
   "private": false
 }
