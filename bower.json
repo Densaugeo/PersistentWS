@@ -1,7 +1,7 @@
 {
   "name": "persistent-ws",
   "main": "PersistentWS.js",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "homepage": "https://github.com/Densaugeo/PersistentWS",
   "repository": {
     "type": "git",
