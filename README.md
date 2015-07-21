@@ -1,10 +1,13 @@
 # PersistentWS
 
-[![Code Climate](https://codeclimate.com/github/Densaugeo/PersistentWS/badges/gpa.svg)](https://codeclimate.com/github/Densaugeo/PersistentWS)
-
 Provides a constructor for WebSockets that automatically attempt to reconnect after being disconnected. Reconnection times start at ~5s for the first attempt, double after each failed attempt, and are randomized by +/- 10% to prevent clients from reconnecting at the exact same time after a server event.
 
-To install, add PersistentWS.js from this repo to your webserver root or install bower module persistent-ws
+[![npm](https://img.shields.io/npm/l/express.svg)]()
+[![Code Climate](https://codeclimate.com/github/Densaugeo/PersistentWS/badges/gpa.svg)](https://codeclimate.com/github/Densaugeo/PersistentWS)
+
+## Installation
+
+Install with bower, npm, or link PersistentWS.js from your html:
 
 ~~~
 wget https://raw.githubusercontent.com/Densaugeo/PersistentWS/master/PersistentWS.js
@@ -12,22 +15,35 @@ wget https://raw.githubusercontent.com/Densaugeo/PersistentWS/master/PersistentW
 OR
 
 bower install --save persistent-ws
+
+OR
+
+npm install --save persistent-ws
 ~~~
 
-PersistentWS is then available from the PersistentWS.js file:
+## Import
+
+Supports node.js, AMD, and browser global modules.
 
 ~~~
-<script type="text/javascript" src="/PersistentWS.js"></script>
+In your html:
+<script type="text/javascript" src="/your/folders/PersistentWS.js"></script>
 
-<!--Or link from your bower folder-->
-<script type="text/javascript" src="/bower_components/persistent-ws/PersistentWS.js"></script>
+Or with browserify:
+var PersistentWS = require('persistent-ws');
+~~~
 
+## Usage
+
+~~~
 <script type="text/javascript">
 var pws = new PersistentWS({url: 'wss://your.websocket/server'});
 
 pws.addEventListener('message', function(message) {
   console.log('Received: ' + message);
 });
+
+pws.socket.send('Hello from a persitent websocket!');
 </script>
 ~~~
 
