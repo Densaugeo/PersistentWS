@@ -1,7 +1,7 @@
 {
   "name": "persistent-ws",
   "description": "Browser WebSocket wrapper for auto-reconnection",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "main": "PersistentWS.js",
   "homepage": "https://github.com/Densaugeo/PersistentWS",
   "repository": {
