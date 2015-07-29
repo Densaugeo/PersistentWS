@@ -21,7 +21,10 @@
   ],
   "ignore": [
     ".git",
-    ".jshintrc"
+    "test",
+    ".gitignore",
+    ".jshintrc",
+    ".travis.yml"
   ],
   "moduleType": [
     "globals",

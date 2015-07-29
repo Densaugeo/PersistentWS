@@ -18,16 +18,25 @@
   },
   "author": "Densaugeo <a@b.c> (http://www.madengineersworkshop.net/)",
   "files": [
+    "doc",
     "bower.json",
     "LICENSE",
     "package.json",
     "PersistentWS.js",
-    "PersistentWS.md",
     "README.md"
   ],
   "bugs": "https://github.com/Densaugeo/PersistentWS/issues",
   "devDependencies": {
+    "jshint": "~2.8.0",
+    "sinon": "~1.15.4",
+    "mocha": "~2.2.5",
+    "ws": "~0.7.2",
+    "moment": "~2.10.6",
+    "thoth-doc": "~0.0.0"
   },
   "scripts": {
+    "lint": "jshint *.js test/*.js",
+    "test": "mocha",
+    "doc": "thoth PersistentWS.js > doc/PersistentWS.md"
   }
 }
