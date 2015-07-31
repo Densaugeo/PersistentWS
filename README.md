@@ -1,5 +1,7 @@
 # PersistentWS
 
+NOTE: I just noticed other people are downloading this off npm, so I will make it pass through the standard WebSocket API soon.
+
 Provides a constructor for WebSockets that automatically attempt to reconnect after being disconnected. Reconnection times start at ~5s for the first attempt, double after each failed attempt, and are randomized by +/- 10% to prevent clients from reconnecting at the exact same time after a server event.
 
 [![npm](https://img.shields.io/npm/l/express.svg)]()
