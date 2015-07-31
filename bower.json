@@ -22,7 +22,9 @@
   "ignore": [
     ".git",
     "test",
+    ".codeclimate.yml",
     ".gitignore",
+    ".jshintignore",
     ".jshintrc",
     ".travis.yml"
   ],

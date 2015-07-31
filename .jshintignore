@@ -1,3 +1,4 @@
-node_modules
+*.pkgd.js
+*.min.js
 test/*.pkgd.js
 test/*.min.js

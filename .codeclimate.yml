@@ -1,0 +1,10 @@
+languages:
+   Ruby: false
+   JavaScript: true
+   Python: false
+   PHP: false
+exclude_paths:
+- "*.pkgd.js"
+- "*.min.js"
+- "test/*.pkgd.js"
+- "test/*.min.js"

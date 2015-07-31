@@ -27,6 +27,7 @@
   ],
   "bugs": "https://github.com/Densaugeo/PersistentWS/issues",
   "devDependencies": {
+    "browserify": "~11.0.1",
     "jshint": "~2.8.0",
     "sinon": "~1.15.4",
     "mocha": "~2.2.5",
@@ -37,7 +38,8 @@
   },
   "scripts": {
     "lint": "jshint *.js test/*.js",
-    "test": "mocha",
+    "test": "mocha test/test.js",
+    "browser-test-build": "browserify test/test.js > test/test.pkgd.js",
     "doc": "thoth PersistentWS.js > doc/PersistentWS.md"
   }
 }

@@ -1,27 +1,34 @@
-var assert       = require('assert');
-var sinon        = require('sinon');
-var ws           = require('ws');
-global.WebSocket = ws; // Supply WebSocket global for client-side library
+var assert = require('assert');
+var sinon = require('sinon');
+
+if(typeof WebSocket === 'undefined') {
+  var ws = require('ws');
+  global.WebSocket = ws; // Supply WebSocket global for node.js-based tests
+}
+
 var PersistentWS = require('..');
 
-var wsServer = new ws.Server({host: '127.0.0.1', port: 8080});
+var nodeJS = process && process.versions && process.versions.node;
+var websocket;
 
-wsServer.on('connection', function(connection) {
-  connection.on('message', function(message) {
-    connection.send(message);
+if(nodeJS) {
+  websocket = require('websocket');
+  
+  var wsServer = new ws.Server({host: '127.0.0.1', port: 8080});
+  
+  wsServer.on('connection', function(connection) {
+    connection.on('message', function(message) {
+      connection.send(message);
+    });
   });
-});
+}
 
 var constants = ['CONNECTING', 'OPEN', 'CLOSING', 'CLOSED'];
 var properties = ['binaryType', 'bufferedAmount', 'extensions', 'protocol', 'readyState', 'url'];
 
-var pws = {};//new PersistentWS('ws://localhost:8080/');
+var pws = {};
 
 suite('WebSocket API', function() {
-  beforeEach(function() {
-    
-  });
-  
   test('Should connect to host using browser WebSocket syntax', function(done) {
     pws = new PersistentWS('ws://localhost:8080/');
     
@@ -286,7 +293,9 @@ suite('WebSocket API', function() {
   
   test('Event listeners removed with .removeEventListener should not fire', function(done) {
     // Swap to WebSocket library that supports .removeEventListener()
-    global.WebSocket = require('websocket').w3cwebsocket;
+    if(nodeJS) {
+      global.WebSocket = websocket.w3cwebsocket;
+    }
     
     this.slow(250);
     
@@ -304,12 +313,16 @@ suite('WebSocket API', function() {
     }, 100);
     
     // Swap WebSocket library back
-    global.WebSocket = ws;
+    if(nodeJS) {
+      global.WebSocket = ws;
+    }
   });
   
   test('Event listeners removed with .removeEventListener should not fire after reconnecting', function(done) {
     // Swap to WebSocket library that supports .removeEventListener()
-    global.WebSocket = require('websocket').w3cwebsocket;
+    if(nodeJS) {
+      global.WebSocket = websocket.w3cwebsocket;
+    }
     
     this.slow(500);
     
@@ -334,7 +347,9 @@ suite('WebSocket API', function() {
     }
     
     // Swap WebSocket library back
-    global.WebSocket = ws;
+    if(nodeJS) {
+      global.WebSocket = ws;
+    }
   });
   
   test('Should talk to console if .verbose is set', function() {
