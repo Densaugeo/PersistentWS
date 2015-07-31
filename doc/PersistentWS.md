@@ -14,19 +14,26 @@ This is a WebSocket that attempts to reconnect after disconnections
 
 Reconnection times start at ~5s, double after each failed attempt, and are randomized +/- 10%
 
-```
-var persistentConnection = new PersistentWS({url: wss://foo.bar/});
+Exposes standard WebSocket API (https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)
 
-persistentConnection.addEventListener('message', function(message) {
-  console.log('Received: ' + message);
+```
+var persistentConnection = new PersistentWS('wss://foo.bar/');
+
+persistentConnection.addEventListener('message', function(e) {
+  console.log('Received: ' + e.data);
 });
+
+// Options may be supplied as a *third* parameter, after the rarely-used protocols argument
+var anotherConnection = new PersistentWS('wss://foo.bar/', undefined, {verbose: true});
 ```
 
 #### Options
 
-`Boolean` **silent** 
+`Number` **initialRetryTime** -- Sets .initialRetryTime
 
-`String` **url** 
+`Boolean` **persistence** -- Sets .persistence
+
+`Boolean` **verbose** -- Sets .verbose
 
 #### Properties
 
@@ -36,21 +43,27 @@ persistentConnection.addEventListener('message', function(message) {
 
 `Number` **initialRetryTime** -- Delay for first retry attempt, in milliseconds. Always an integer >= 100
 
-`Boolean` **silent** 
+`Boolean` **persistence** -- If false, disables reconnection
 
 `WebSocket` **socket** -- The actual WebSocket. Events registered directly to the raw socket will be lost after reconnections
 
-`String` **url** 
+`Boolean` **verbose** -- console.log() info about connections and disconnections
 
 #### Methods
 
-`undefined` **_connect**`()` -- For internal use
+`undefined` **_connect**`()` -- For internal use. Connects and copies in event listeners
 
 `Number` proto **_getListenerIndex**`(String type, Function listener[, Boolean useCapture])` -- For internal use. Returns index of a listener in ._listeners
 
-`undefined` proto **addEventListener**`(String type, Function listener[, Boolean useCapture])` -- Registers event listener on .socket. Event listener will be reregistered after reconnections
+`undefined` **_onclose**`(Event e)` -- For internal use. Calls to .onclose() and ._reconnect() where appropriate
+
+`undefined` **_onerror**`(Error e)` -- For internal use. Calls to .onerror()
+
+`undefined` **_onmessage**`(Event e)` -- For internal use. Calls to .onmessage()
+
+`undefined` **_onopen**`(Event e)` -- For internal use. Calls to .onopen() and handles reconnection cleanup
+
+`undefined` proto **_reconnect**`()` -- For internal use. Begins the reconnection timer
 
 `Boolean` proto **dispatchEvent**`(Event event)` -- Same as calling .dispatchEvent() on .socket
-
-`undefined` proto **removeEventListener**`(String type, Function listener[, Boolean useCapture])` -- Removes an event listener from .socket. Event listener will no longer be reregistered after reconnections
 

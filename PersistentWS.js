@@ -36,8 +36,8 @@
   var PersistentWS = function PersistentWS(url, protocols, options) {
     var self = this;
     
-    // @prop Boolean verbose
-    // @option Boolean verbose
+    // @prop Boolean verbose -- console.log() info about connections and disconnections
+    // @option Boolean verbose -- Sets .verbose
     this.verbose = Boolean(options && options.verbose) || false;
     
     // @prop Number initialRetryTime -- Delay for first retry attempt, in milliseconds. Always an integer >= 100
