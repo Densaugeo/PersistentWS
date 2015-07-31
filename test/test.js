@@ -6,12 +6,6 @@ var PersistentWS = require('..');
 
 var wsServer = new ws.Server({host: '127.0.0.1', port: 8080});
 
-Object.defineProperty(wsServer.clients, 'last', {
-  get: function() {
-    return this[this.length - 1];
-  }
-});
-
 wsServer.on('connection', function(connection) {
   connection.on('message', function(message) {
     connection.send(message);
@@ -40,11 +34,11 @@ suite('WebSocket API', function() {
     pws = new PersistentWS('ws://localhost:8080/');
     
     pws.addEventListener('open', function() {
-      wsServer.clients.last.onmessage = function(m) {
+      pws.addEventListener('message', function(m) {
         assert.strictEqual(m.data, 'foo');
         
         done();
-      }
+      });
       
       pws.send('foo');
     });
@@ -55,7 +49,7 @@ suite('WebSocket API', function() {
     assert.strictEqual(pws.verbose, false);
     assert.strictEqual(pws.initialRetryTime, 1000);
     
-    var spy = new sinon.stub(console, 'log');
+    sinon.stub(console, 'log');
     
     pws = new PersistentWS('ws://localhost:8080/', undefined, {verbose: true, initialRetryTime: 5000});
     assert.strictEqual(pws.verbose, true);
@@ -127,7 +121,7 @@ suite('WebSocket API', function() {
     pws = new PersistentWS('ws://localhost:8080/', undefined, {initialRetryTime: 100});
     
     pws.onopen = function() {
-      wsServer.clients.last.close();
+      pws.close();
       
       pws.onopen = function() {
         done();
@@ -163,21 +157,15 @@ suite('WebSocket API', function() {
     pws = new PersistentWS('ws://localhost:8080/', undefined, {initialRetryTime: 100});
     
     var binaryType = pws.binaryType = 'arraybuffer';
-    var onclose = pws.onerror = function(close) {}
-    var onerror = pws.onerror = function(error) {}
-    var onmessage = pws.onmessage = function(message) {}
     
     pws.onopen = function() {
       pws.onopen = function() {
         assert.strictEqual(pws.socket.binaryType, binaryType);
-        assert.strictEqual(pws.binaryType, binaryType);
-        assert.strictEqual(pws.onerror, onerror);
-        assert.strictEqual(pws.onmessage, onmessage);
         
         done();
       }
       
-      wsServer.clients.last.close();
+      pws.close();
     }
   });
   
@@ -222,7 +210,7 @@ suite('WebSocket API', function() {
   });
   
   test('Event listeners registered with .onerror should be called with an error argument', function(done) {
-    pws = new PersistentWS('ws://foobar:8080/');
+    pws = new PersistentWS('ws://localhost:1234/');
     
     pws.onerror = function(e) {
       assert.strictEqual(typeof e, 'object');

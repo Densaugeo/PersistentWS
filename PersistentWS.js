@@ -54,31 +54,47 @@
     // @prop WebSocket socket -- The actual WebSocket. Events registered directly to the raw socket will be lost after reconnections
     this.socket = {};
     
-    // @prop [[String, Function, Boolean]] _listeners -- For internal use. Array of .addEventListener arguments
-    this._listeners = [
-      ['open', function(e) {if(self.onopen) self.onopen(e)}],
-      ['message', function(e) {if(self.onmessage) self.onmessage(e)}],
-      ['error', function(e) {if(self.onerror) self.onerror(e)}],
-      ['close', function(e) {if(self.onclose) self.onclose(e)}]
-    ];
-    
-    var closeListener = function() {
-      if(self.persistence) {
-        // Retty time falls of exponentially
-        var retryTime = self.initialRetryTime*Math.pow(2, self.attempts++);
-        
-        // Retry time is randomized +/- 10% to prevent clients reconnecting at the exact same time after a server event
-        retryTime += Math.floor(Math.random()*retryTime/5 - retryTime/10);
-        
-        if(self.verbose) {
-          console.log('WebSocket disconnected, attempting to reconnect in ' + retryTime + 'ms...');
-        }
-        
-        setTimeout(self._connect, retryTime);
+    // @method undefined _onopen(Event e) -- For internal use. Calls to .onopen() and handles reconnection cleanup
+    this._onopen = function(e) {
+      if(self.onopen) {
+        self.onopen(e);
       }
     }
     
-    // @method undefined _connect() -- For internal use
+    // @method undefined _onmessage(Event e) -- For internal use. Calls to .onmessage()
+    this._onmessage = function(e) {
+      if(self.onmessage) {
+        self.onmessage(e);
+      }
+    }
+    
+    // @method undefined _onerror(Error e) -- For internal use. Calls to .onerror()
+    this._onerror = function(e) {
+      if(self.onerror) {
+        self.onerror(e);
+      }
+    }
+    
+    // @method undefined _onclose(Event e) -- For internal use. Calls to .onclose() and ._reconnect() where appropriate
+    this._onclose = function(e) {
+      if(self.persistence) {
+        self._reconnect();
+      }
+      
+      if(self.onclose) {
+        self.onclose(e);
+      }
+    }
+    
+    // @prop [[String, Function, Boolean]] _listeners -- For internal use. Array of .addEventListener arguments
+    this._listeners = [
+      ['open', this._onopen],
+      ['message', this._onmessage],
+      ['error', this._onerror],
+      ['close', this._onclose]
+    ];
+    
+    // @method undefined _connect() -- For internal use. Connects and copies in event listeners
     this._connect = function _connect() {
       if(self.verbose) {
         console.log('Opening WebSocket to ' + url);
@@ -98,8 +114,6 @@
         
         self.attempts = 0;
       });
-      
-      self.socket.addEventListener('close', closeListener);
       
       self._listeners.forEach(function(v) {
         self.socket.addEventListener.apply(self.socket, v);
@@ -127,7 +141,7 @@
         return this.socket[v];
       },
       set: function(x) {
-        return this.socket[v] = x;
+        return (this.socket[v] = x);
       }
     });
   });
@@ -184,6 +198,21 @@
     });
     
     return result;
+  }
+  
+  // @method proto undefined _reconnect() -- For internal use. Begins the reconnection timer
+  PersistentWS.prototype._reconnect = function() {
+    // Retty time falls of exponentially
+    var retryTime = this.initialRetryTime*Math.pow(2, this.attempts++);
+    
+    // Retry time is randomized +/- 10% to prevent clients reconnecting at the exact same time after a server event
+    retryTime += Math.floor(Math.random()*retryTime/5 - retryTime/10);
+    
+    if(this.verbose) {
+      console.log('WebSocket disconnected, attempting to reconnect in ' + retryTime + 'ms...');
+    }
+    
+    setTimeout(this._connect, retryTime);
   }
   
   // Only one object to return, so no need for module object to hold it
