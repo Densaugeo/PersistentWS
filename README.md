@@ -4,6 +4,7 @@ Provides a constructor for WebSockets that automatically attempt to reconnect af
 
 [![npm](https://img.shields.io/npm/l/express.svg)]()
 [![Code Climate](https://codeclimate.com/github/Densaugeo/PersistentWS/badges/gpa.svg)](https://codeclimate.com/github/Densaugeo/PersistentWS)
+[![Build Status](https://travis-ci.org/Densaugeo/PersistentWS.svg?branch=master)](https://travis-ci.org/Densaugeo/PersistentWS)
 
 ## Installation
 
