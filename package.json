@@ -1,22 +1,16 @@
 {
   "name": "persistent-ws",
+  "version": "1.0.1",
   "description": "Browser WebSocket wrapper for auto-reconnection",
-  "version": "1.0.0",
-  "main": "PersistentWS.js",
-  "homepage": "https://github.com/Densaugeo/PersistentWS",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Densaugeo/PersistentWS.git"
-  },
   "keywords": [
     "WebSocket",
     "persistent"
   ],
+  "homepage": "https://github.com/Densaugeo/PersistentWS",
+  "bugs": "https://github.com/Densaugeo/PersistentWS/issues",
   "license": "MIT",
-  "private": false,
-  "dependencies": {
-  },
-  "author": "Densaugeo <a@b.c> (http://www.madengineersworkshop.net/)",
+  "author": "Densaugeo (http://www.madengineersworkshop.net/)",
+  "contributors": [],
   "files": [
     "doc",
     "bower.json",
@@ -25,7 +19,19 @@
     "PersistentWS.js",
     "README.md"
   ],
-  "bugs": "https://github.com/Densaugeo/PersistentWS/issues",
+  "main": "PersistentWS.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Densaugeo/PersistentWS.git"
+  },
+  "scripts": {
+    "lint": "jshint *.js test/*.js",
+    "test": "mocha test/test.js",
+    "browser-test-build": "browserify test/test.js > test/test.pkgd.js",
+    "doc": "thoth PersistentWS.js > doc/PersistentWS.md"
+  },
+  "config": {},
+  "dependencies": {},
   "devDependencies": {
     "browserify": "~11.0.1",
     "jshint": "~2.8.0",
@@ -35,10 +41,5 @@
     "websocket": "~1.0.21",
     "thoth-doc": "~0.0.0"
   },
-  "scripts": {
-    "lint": "jshint *.js test/*.js",
-    "test": "mocha test/test.js",
-    "browser-test-build": "browserify test/test.js > test/test.pkgd.js",
-    "doc": "thoth PersistentWS.js > doc/PersistentWS.md"
-  }
+  "engines": {}
 }
