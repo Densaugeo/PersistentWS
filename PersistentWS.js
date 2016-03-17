@@ -44,6 +44,10 @@
     // @option Number initialRetryTime -- Sets .initialRetryTime
     this.initialRetryTime = Number(options && options.initialRetryTime) || 5000;
     
+    // @prop Number maxRetryTime -- Maximum delay between retry attempts, in milliseconds. Integer or null
+    // @option Number maxRetryTime -- Sets .maxRetryTime
+    this.maxRetryTime = Number(options && options.maxRetryTime) || null;
+    
     // @prop Boolean persistence -- If false, disables reconnection
     // @option Boolean persistence -- Sets .persistence
     this.persistence = options === undefined || options.persistence === undefined || Boolean(options.persistence);
@@ -204,6 +208,11 @@
   PersistentWS.prototype._reconnect = function() {
     // Retty time falls of exponentially
     var retryTime = this.initialRetryTime*Math.pow(2, this.attempts++);
+    
+    // If .maxRetryTime was specified, retry time must be no more than 90% of max before randomization
+    if(typeof this.maxRetryTime === 'number') {
+      retryTime = Math.min(retryTime, 0.9*this.maxRetryTime);
+    }
     
     // Retry time is randomized +/- 10% to prevent clients reconnecting at the exact same time after a server event
     retryTime += Math.floor(Math.random()*retryTime/5 - retryTime/10);

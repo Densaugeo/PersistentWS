@@ -31,6 +31,8 @@ var anotherConnection = new PersistentWS('wss://foo.bar/', undefined, {verbose: 
 
 `Number` **initialRetryTime** -- Sets .initialRetryTime
 
+`Number` **maxRetryTime** -- Sets .maxRetryTime
+
 `Boolean` **persistence** -- Sets .persistence
 
 `Boolean` **verbose** -- Sets .verbose
@@ -42,6 +44,8 @@ var anotherConnection = new PersistentWS('wss://foo.bar/', undefined, {verbose: 
 `Number` **attempts** -- Retry attempt # since last disconnect
 
 `Number` **initialRetryTime** -- Delay for first retry attempt, in milliseconds. Always an integer >= 100
+
+`Number` **maxRetryTime** -- Maximum delay between retry attempts, in milliseconds. Integer or null
 
 `Boolean` **persistence** -- If false, disables reconnection
 
