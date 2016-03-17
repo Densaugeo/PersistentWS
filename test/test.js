@@ -28,6 +28,28 @@ var properties = ['binaryType', 'bufferedAmount', 'extensions', 'protocol', 'rea
 
 var pws = {};
 
+suite('Default values', function() {
+  before(function() {
+    pws = new PersistentWS('ws://localhost:8080/');
+  });
+  
+  test('.verbose should default to false', function() {
+    assert.strictEqual(pws.verbose, false);
+  });
+  
+  test('.initialRetryTime should default to 5000', function() {
+    assert.strictEqual(pws.initialRetryTime, 5000);
+  });
+  
+  test('.maxRetryTime should default to null', function() {
+    assert.strictEqual(pws.maxRetryTime, null);
+  });
+  
+  test('.persistence should default to true', function() {
+    assert.strictEqual(pws.persistence, true);
+  });
+});
+
 suite('WebSocket API', function() {
   test('Should connect to host using browser WebSocket syntax', function(done) {
     pws = new PersistentWS('ws://localhost:8080/');
@@ -51,20 +73,29 @@ suite('WebSocket API', function() {
     });
   });
   
-  test('Options arguent should set .verbose and .initialRetryTime options', function() {
-    pws = new PersistentWS('ws://localhost:8080/', undefined, {verbose: false, initialRetryTime: 1000});
-    assert.strictEqual(pws.verbose, false);
-    assert.strictEqual(pws.initialRetryTime, 1000);
-    
+  test('Options.verbose should set .verbose', function() {
     sinon.stub(console, 'log');
     
-    pws = new PersistentWS('ws://localhost:8080/', undefined, {verbose: true, initialRetryTime: 5000});
+    pws = new PersistentWS('ws://localhost:8080/', undefined, {verbose: true});
     assert.strictEqual(pws.verbose, true);
-    assert.strictEqual(pws.initialRetryTime, 5000);
     
     pws.verbose = false;
-    
     console.log.restore();
+  });
+  
+  test('Options.initialRetryTime should set .initialRetryTime', function() {
+    pws = new PersistentWS('ws://localhost:8080/', undefined, {initialRetryTime: 100});
+    assert.strictEqual(pws.initialRetryTime, 100);
+  });
+  
+  test('Options.maxRetryTime should set .maxRetryTime', function() {
+    pws = new PersistentWS('ws://localhost:8080/', undefined, {maxRetryTime: 10000});
+    assert.strictEqual(pws.maxRetryTime, 10000);
+  });
+  
+  test('Options.persistence should set .persistence', function() {
+    pws = new PersistentWS('ws://localhost:8080/', undefined, {persistence: false});
+    assert.strictEqual(pws.persistence, false);
   });
   
   test('Constructor should have WebSocket\'s constants', function() {
