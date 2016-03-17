@@ -36,7 +36,7 @@
   var PersistentWS = function PersistentWS(url, protocols, options) {
     var self = this;
     
-    // @prop Boolean verbose -- console.log() info about connections and disconnections
+    // @prop Boolean verbose -- log info about connections and disconnections
     // @option Boolean verbose -- Sets .verbose
     this.verbose = Boolean(options && options.verbose) || false;
     
@@ -57,6 +57,10 @@
     
     // @prop WebSocket socket -- The actual WebSocket. Events registered directly to the raw socket will be lost after reconnections
     this.socket = {};
+    
+    // @option Function logger -- Sets .logger
+    // @method * logger(*) -- Method to use for logging. Defaults to console.log
+    this.logger = (options && options.logger) || console.log;
     
     // @method undefined _onopen(Event e) -- For internal use. Calls to .onopen() and handles reconnection cleanup
     this._onopen = function(e) {
@@ -101,7 +105,7 @@
     // @method undefined _connect() -- For internal use. Connects and copies in event listeners
     this._connect = function _connect() {
       if(self.verbose) {
-        console.log('Opening WebSocket to ' + url);
+        self.logger('Opening WebSocket to ' + url);
       }
       
       var binaryType = self.socket.binaryType;
@@ -113,7 +117,7 @@
       // Reset .attempts counter on successful connection
       self.socket.addEventListener('open', function() {
         if(self.verbose) {
-          console.log('WebSocket connected to ' + self.url);
+          self.logger('WebSocket connected to ' + self.url);
         }
         
         self.attempts = 0;
@@ -218,7 +222,7 @@
     retryTime += Math.floor(Math.random()*retryTime/5 - retryTime/10);
     
     if(this.verbose) {
-      console.log('WebSocket disconnected, attempting to reconnect in ' + retryTime + 'ms...');
+      this.logger('WebSocket disconnected, attempting to reconnect in ' + retryTime + 'ms...');
     }
     
     setTimeout(this._connect, retryTime);

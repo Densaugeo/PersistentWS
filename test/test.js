@@ -48,6 +48,10 @@ suite('Default values', function() {
   test('.persistence should default to true', function() {
     assert.strictEqual(pws.persistence, true);
   });
+  
+  test('.logger should default to console.log', function() {
+    assert.strictEqual(pws.logger, console.log);
+  });
 });
 
 suite('WebSocket API', function() {
@@ -96,6 +100,13 @@ suite('WebSocket API', function() {
   test('Options.persistence should set .persistence', function() {
     pws = new PersistentWS('ws://localhost:8080/', undefined, {persistence: false});
     assert.strictEqual(pws.persistence, false);
+  });
+  
+  test('Options.logger should set .logger', function() {
+    var aLogger = function() {}
+    
+    pws = new PersistentWS('ws://localhost:8080/', undefined, {logger: aLogger});
+    assert.strictEqual(pws.logger, aLogger);
   });
   
   test('Constructor should have WebSocket\'s constants', function() {
@@ -403,5 +414,63 @@ suite('WebSocket API', function() {
     assert.strictEqual(spy.called, false);
     
     console.log.restore();
+  });
+});
+
+suite('Logging', function() {
+  test('If .verbose is false, no logging should be done', function(done) {
+    this.slow(250);
+    
+    sinon.stub(console, 'log');
+    
+    pws = new PersistentWS('ws://localhost:8080/', undefined, {initialRetryTime: 100});
+    
+    pws.onopen = function() {
+      pws.close();
+      
+      pws.onopen = function() {
+        assert.strictEqual(console.log.called, false);
+        console.log.restore();
+        done();
+      }
+    }
+  });
+  
+  test('If .verbose is true, logging should be done', function(done) {
+    this.slow(250);
+    
+    sinon.stub(console, 'log');
+    
+    pws = new PersistentWS('ws://localhost:8080/', undefined, {initialRetryTime: 100, verbose: true});
+    
+    pws.onopen = function() {
+      pws.close();
+      
+      pws.onopen = function() {
+        assert.strictEqual(console.log.called, true);
+        console.log.restore();
+        done();
+      }
+    }
+  });
+  
+  test('If .verbose is true with a custom .logger, all logs should go through .logger', function(done) {
+    this.slow(250);
+    
+    sinon.stub(console, 'log');
+    var aLogger = sinon.spy();
+    
+    pws = new PersistentWS('ws://localhost:8080/', undefined, {initialRetryTime: 100, verbose: true, logger: aLogger});
+    
+    pws.onopen = function() {
+      pws.close();
+      
+      pws.onopen = function() {
+        assert.strictEqual(console.log.called, false);
+        assert.strictEqual(aLogger.called, true);
+        console.log.restore();
+        done();
+      }
+    }
   });
 });

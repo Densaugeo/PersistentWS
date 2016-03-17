@@ -31,6 +31,8 @@ var anotherConnection = new PersistentWS('wss://foo.bar/', undefined, {verbose: 
 
 `Number` **initialRetryTime** -- Sets .initialRetryTime
 
+`Function` **logger** -- Sets .logger
+
 `Number` **maxRetryTime** -- Sets .maxRetryTime
 
 `Boolean` **persistence** -- Sets .persistence
@@ -51,7 +53,7 @@ var anotherConnection = new PersistentWS('wss://foo.bar/', undefined, {verbose: 
 
 `WebSocket` **socket** -- The actual WebSocket. Events registered directly to the raw socket will be lost after reconnections
 
-`Boolean` **verbose** -- console.log() info about connections and disconnections
+`Boolean` **verbose** -- log info about connections and disconnections
 
 #### Methods
 
@@ -70,4 +72,6 @@ var anotherConnection = new PersistentWS('wss://foo.bar/', undefined, {verbose: 
 `undefined` proto **_reconnect**`()` -- For internal use. Begins the reconnection timer
 
 `Boolean` proto **dispatchEvent**`(Event event)` -- Same as calling .dispatchEvent() on .socket
+
+`*` **logger**`(*)` -- Method to use for logging. Defaults to console.log
 
