@@ -60,7 +60,7 @@
     
     // @option Function logger -- Sets .logger
     // @method * logger(*) -- Method to use for logging. Defaults to console.log
-    this.logger = (options && options.logger) || console.log;
+    this.logger = (options && options.logger) || function(m) {console.log(m)};
     
     // @method undefined _onopen(Event e) -- For internal use. Calls to .onopen() and handles reconnection cleanup
     this._onopen = function(e) {
