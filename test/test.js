@@ -48,10 +48,6 @@ suite('Default values', function() {
   test('.persistence should default to true', function() {
     assert.strictEqual(pws.persistence, true);
   });
-  
-  test('.logger should default to console.log', function() {
-    assert.strictEqual(pws.logger, console.log);
-  });
 });
 
 suite('WebSocket API', function() {
@@ -436,7 +432,7 @@ suite('Logging', function() {
     }
   });
   
-  test('If .verbose is true, logging should be done', function(done) {
+  test('If .verbose is true, default .logger should call console.log()', function(done) {
     this.slow(250);
     
     sinon.stub(console, 'log');
