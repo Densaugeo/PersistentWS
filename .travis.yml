@@ -1,4 +1,4 @@
-dist: focal # Ubuntu 20.04
+dist: xenial # Ubuntu 16.04
 language: node_js
 node_js:
 - "stable"
